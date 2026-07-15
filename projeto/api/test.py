@@ -1,0 +1,66 @@
+from fastapi import APIRouter, HTTPException
+from fastapi.logger import logger
+from pathlib import Path
+import json
+
+from services.test_service import TestService
+from services.download_service import DownloadService
+from services.database_service import DatabaseService
+from pydantic import BaseModel
+
+
+class PipelineRequest(BaseModel):
+    allow_download: bool = False
+
+router = APIRouter()
+
+
+@router.post("/test/run")
+def run_test():
+    logger.info("Iniciando Test Mode (download + import parcial)")
+    try:
+        result = TestService.run_test()
+        return {"success": True, "result": result}
+    except Exception as exc:
+        logger.exception("Falha ao executar Test Mode: %s", exc)
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.get("/test/status")
+def test_status():
+    try:
+        # Read last download metadata
+        meta = {}
+        if DownloadService.METADATA_PATH.exists():
+            try:
+                meta = json.loads(DownloadService.METADATA_PATH.read_text(encoding='utf-8'))
+            except Exception:
+                meta = {"error": "invalid metadata"}
+
+        # DB counts
+        stats = {}
+        with DatabaseService.get_connection() as conn:
+            try:
+                stats['total_companies'] = conn.execute("SELECT COUNT(*) FROM company_data").fetchone()[0]
+            except Exception:
+                stats['total_companies'] = 0
+            try:
+                stats['active_companies'] = conn.execute("SELECT COUNT(*) FROM company_data WHERE situacao_cadastral LIKE 'Ativa' OR situacao_cadastral LIKE 'ATIVA'").fetchone()[0]
+            except Exception:
+                stats['active_companies'] = 0
+
+        return {"success": True, "metadata": meta, "db_stats": stats}
+    except Exception as exc:
+        logger.exception("Falha ao obter status de teste: %s", exc)
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.post('/test/pipeline')
+def test_pipeline(req: PipelineRequest):
+    logger.info('Executando Test Pipeline (allow_download=%s)', req.allow_download)
+    try:
+        report = TestService.run_pipeline(allow_download=req.allow_download)
+        return {"success": True, "report": report}
+    except Exception as exc:
+        logger.exception('Falha no Test Pipeline: %s', exc)
+        raise HTTPException(status_code=500, detail=str(exc))

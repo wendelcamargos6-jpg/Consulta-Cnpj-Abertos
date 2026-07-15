@@ -1,0 +1,47 @@
+{
+  "files": {
+    "cnaes.csv": {
+      "last_row": 3,
+      "rows_imported": 3,
+      "processed": true,
+      "time_s": 0.06438302993774414,
+      "errors": []
+    },
+    "naturezas.csv": {
+      "last_row": 3,
+      "rows_imported": 3,
+      "processed": true,
+      "time_s": 0.03678274154663086,
+      "errors": []
+    },
+    "municipios.csv": {
+      "last_row": 3,
+      "rows_imported": 3,
+      "processed": true,
+      "time_s": 0.04019355773925781,
+      "errors": []
+    },
+    "empresas.csv": {
+      "processed": true,
+      "time_s": 0.04946732521057129,
+      "errors": [],
+      "last_row": 2,
+      "rows_imported": 2
+    },
+    "estabelecimentos.csv": {
+      "processed": true,
+      "time_s": 0.05457878112792969,
+      "errors": [],
+      "last_row": 2,
+      "rows_imported": 2
+    },
+    "simples.csv": {
+      "processed": true,
+      "time_s": 0.04060101509094238,
+      "errors": [],
+      "last_row": 1,
+      "rows_imported": 1
+    }
+  },
+  "last_updated": "2026-07-09T20:13:43Z"
+}

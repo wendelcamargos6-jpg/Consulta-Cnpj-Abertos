@@ -1,0 +1,11 @@
+{
+  "candidates": {},
+  "estimates": {},
+  "download_estimate": {
+    "total_bytes": 0,
+    "total_seconds": 0.0,
+    "per_file_seconds": {}
+  },
+  "import_estimate_seconds": 0.0,
+  "duckdb_path": "/workspaces/consultaCNPJ/database/cnpj_hunter.duckdb"
+}
