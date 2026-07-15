@@ -339,6 +339,7 @@ const searchPageMarkup = () => `
     </div>
 
     <div class="search-summary" id="searchSummary"></div>
+    <div class="results-count" id="searchMatchCount"></div>
 
     <div class="section-header">
       <div>
@@ -408,6 +409,7 @@ const setSearchSelectors = () => {
   selectors.searchPagination = document.getElementById('searchPagination');
   selectors.searchSummary = document.getElementById('searchSummary');
   selectors.searchResultsMessage = document.getElementById('searchResultsMessage');
+  selectors.searchMatchCount = document.getElementById('searchMatchCount');
 };
 
 const setExportSelectors = () => {
@@ -666,7 +668,9 @@ const renderSearchTable = () => {
     });
   });
 
-  selectors.searchMatchCount.textContent = `${limited.length.toLocaleString('pt-BR')} registro(s) encontrados`;
+  if (selectors.searchMatchCount) {
+    selectors.searchMatchCount.textContent = `${limited.length.toLocaleString('pt-BR')} registro(s) encontrados`;
+  }
   renderPagination(limited.length);
 };
 
